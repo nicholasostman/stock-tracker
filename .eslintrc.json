@@ -1,0 +1,77 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "strict": [2, "safe"],
+        "brace-style": [2, "1tbs", {
+            "allowSingleLine": true
+        }],
+        "dot-notation": 2,
+        "eqeqeq": 2,
+        "keyword-spacing": 2,
+        "space-before-function-paren": [2, "never"],
+        "spaced-comment": [1, "always"],
+        "no-undef": 2,
+        "no-undefined": 2,
+        "quotes": [2, "single"],
+        "semi": [2, "never"],
+        "sort-imports": 1,
+        "sort-vars": 1,
+        "guard-for-in": 2,
+        "no-eval": 2,
+        "no-with": 2,
+        "valid-typeof": 2,
+        "vars-on-top": 2,
+        "no-debugger": 2,
+        "no-unused-vars": 2,
+        "no-implicit-coercion": 1,
+        "no-continue": 1,
+        "no-var": 2,
+        "no-extra-semi": 2,
+        "no-multi-spaces": 2,
+        "no-trailing-spaces": 2,
+        "no-unreachable": 2,
+        "no-unused-expressions": 1,
+        "no-unused-labels": 1,
+        "no-useless-return": 2,
+        "no-magic-numbers": ["warn",
+            {
+                "ignore": [-1, 0, 1, 2, 200, 300, 400, 404]
+            }
+        ],
+        "no-lonely-if": 2,
+        "max-len": [1, 160, 5],
+        "yoda": 1,
+        "react/prefer-es6-class": 1,
+        "indent": ["error","tab"],
+        "no-multiple-empty-lines": ["error",
+            {
+                "max": 2,
+                "maxEOF": 1,
+                "maxBOF": 0
+            }
+        ]
+    }
+}

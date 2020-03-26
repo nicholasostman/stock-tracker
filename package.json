@@ -1,0 +1,63 @@
+{
+  "name": "stock-tracker",
+  "version": "1.0.0",
+  "description": "Programming evaluation. This application is used to track the values of three stocks since 1/1/2019",
+  "main": "src/entry.js",
+  "scripts": {
+    "start": "node .",
+    "parcel": "parcel ./src/app.js",
+    "parcel:debug": "parcel --log-level 3./src/app.js --no-minify",
+    "dist": "node dist/app.js",
+    "predist": "npm run build",
+    "build": "parcel build src/entry.js --target node --bundle-node-modules --out-file app.js",
+    "build:debug": "parcel build src/entry.js --no-minify --experimental-scope-hoisting --target node --bundle-node-modules --out-file app.js",
+    "clean": "rm dist/bundle.js",
+    "coverage": "jest ./spec/ --collect-coverage",
+    "test": "jest ./spec/",
+    "lint": "eslint ./src",
+    "fix": "eslint ./src --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicholasostman/stock-tracker.git"
+  },
+  "author": "Nick Ostman",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bluebird": "^3.7.2",
+    "config": "^3.3.0",
+    "csv-writer": "^1.6.0",
+    "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
+    "moment": "^2.24.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.1",
+    "babel-jest": "^25.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "jest": "^25.1.0",
+    "mock-require": "^3.0.3",
+    "nock": "^12.0.3",
+    "parcel-bundler": "^1.12.4",
+    "proxyquire": "^2.1.3",
+    "rewire": "^5.0.0",
+    "rewiremock": "^3.13.9",
+    "supertest": "^4.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/nicholasostman/stock-tracker/issues"
+  },
+  "homepage": "https://github.com/nicholasostman/stock-tracker#readme",
+  "browserslist": [
+    "> 2%"
+  ],
+  "engines": {
+    "node": ">=12.16.1"
+  }
+}

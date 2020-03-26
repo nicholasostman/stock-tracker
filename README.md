@@ -5,4 +5,23 @@ This application utilizes a Node.js backend and React frontend.
 
 This API is used to retrieve stock pricing data: https://financialmodelingprep.com/developer/docs/ 
 
-Output as a CSV file.  For each stock include the ticker, quantity bought, real-time price, highest price and lowest price between 1/1/2019 and now, and the calculated current value of that holding.  The last row is a Total which only includes the current total value of the portfolio.  Write Unit Tests for the script to appropriately test the code written 
+Outputs as a CSV file. This code does NOT take into account any type of stock split or similar action.
+
+To Run:
+
+```sh
+npm install
+npm start
+```
+
+To create a production build:
+
+```sh
+npm run build-prod
+```
+
+Future Potential:
+UI upon request UI or otherwise (would be a good candidate for Next.js experiment)
+Select stocks from https://financialmodelingprep.com/developer/docs/#Symbols-List word cloud/list
+
+Include stock splits.
