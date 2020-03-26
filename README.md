@@ -21,7 +21,7 @@ npm run build-prod
 ```
 
 Future Potential:
-UI upon request UI or otherwise (would be a good candidate for Next.js experiment)
+UI upon request or otherwise (would be a good candidate for Next.js experiment)
 Select stocks from https://financialmodelingprep.com/developer/docs/#Symbols-List word cloud/list
 
 Include stock splits.

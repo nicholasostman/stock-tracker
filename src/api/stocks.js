@@ -4,6 +4,7 @@ import { DEFAULTQUANTITIES, STONKS } from '../common/constants'
 import express from 'express'
 import HttpStatus from'http-status-codes'
 import { getStockInfo } from '../service/stock-service'
+import { toDollarString } from '../common/helpers'
 
 const router = express.Router()
 
@@ -14,20 +15,31 @@ const csvWriter = createObjectCsvWriter({
 		{id: 'value', title: 'Current Value'},
 		{id: 'quantity', title: 'Quantity'},
 		{id: 'price', title: 'Current Price'},
-		{id: 'yearHigh', title: 'Highest Price'},
-		{id: 'yearLow', title: 'Lowest Price'}
+		{id: 'high', title: 'Highest Price'},
+		{id: 'low', title: 'Lowest Price'}
 	]
 })
 
 router.get('/', async function(req, res) {
 	try {
 		// Future: Can parse out req here for user input stocks
-		const data = await getStockInfo(STONKS, DEFAULTQUANTITIES)
+		const stockResults = await getStockInfo(STONKS, DEFAULTQUANTITIES)
 
 		// Format values to dollars
-		console.log('final print: ', data)
+		let lastIndex = stockResults.length-1
+		let index = 0
+		for (index; index < lastIndex; index++) { // Skip last index, A.K.A. the Total obj
+			let stock = stockResults[index]
+			stock.value = toDollarString(stock.value)
+			stock.price = toDollarString(stock.price)
+			stock.high = toDollarString(stock.high)
+			stock.low = toDollarString(stock.low)
+		}
 
-		csvWriter.writeRecords(data)
+		// Grab & format last item "total"
+		stockResults[lastIndex].value = toDollarString(stockResults[lastIndex].value)
+
+		csvWriter.writeRecords(stockResults)
 			.then(() => {
 				console.info('CSV written successfully')
 			})
@@ -36,7 +48,7 @@ router.get('/', async function(req, res) {
 			})
 
 		res.status(HttpStatus.OK)
-		res.json(data)
+		res.json(stockResults)
 		return res
 	} catch (err) {
 		console.error('Error in fetching stock data: ', err)

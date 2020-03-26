@@ -4,10 +4,10 @@ import { STONKS, DEFAULTQUANTITIES } from '../../src/common/constants'
 import nock from 'nock'
 
 // Define testing constants
-const defaultHighVal = '$63.44'
-const prevYearHigherVal = '1000.96'
-const defaultLowVal = '19.10'
-const prevYearLowerVal = '2.14'
+const defaultHighVal = 63.44
+const prevYearHigherVal = 1000.96
+const defaultLowVal = 19.10
+const prevYearLowerVal = 2.14
 const defaultLastYear = '2019'
 const defaultStockSymbol = STONKS[0]
 // moment will use Data.now internally to calculate previous year for history function
@@ -88,33 +88,55 @@ const defaultResponseFromQuoteEndpoint =  [{
 const defaultResponseForCurrentYear = [
     {
       symbol: 'DAL',
-      value: '$44.44',
+      value: 44.44,
       quantity: 2,
-      price: '$22.22',
-      yearHigh: '$63.44',
-      yearLow: '$19.10'
+      price: 22.22,
+      high: 63.44,
+      low: 19.10
     },
     {
       symbol: 'LYFT',
-      value: '$135.66',
+      value: 135.66,
       quantity: 6,
-      price: '$22.61',
-      yearHigh: '$88.60',
-      yearLow: '$14.56'
+      price: 22.61,
+      high: 88.60,
+      low: 14.562
     },
     {
       symbol: 'UBER',
-      value: '$156.80',
+      value: 156.79999999999998,
       quantity: 7,
-      price: '$22.40',
-      yearHigh: '$47.08',
-      yearLow: '$13.71'
+      price: 22.40,
+      high: 47.08,
+      low: 13.71
     },
-    { symbol: 'Total', value: '$336.90' }
+    { symbol: 'Total', value: 336.90 }
 ]
-const defaultResponseForHistoryFunc = {stockSymbol: STONKS[0], highValue: defaultHighVal, lowValue: defaultLowVal}
-const prevYearHigherResponseForHistoryFunc = {stockSymbol: STONKS[0], highValue: prevYearHigherVal, lowValue: defaultLowVal}
-const prevYearLowerResponseForHistoryFunc = {stockSymbol: STONKS[0], highValue: defaultHighVal, lowValue: prevYearLowerVal}
+const defaultResponseForHistoryFunc = {
+    symbol: STONKS[0],
+    value: 44.44,
+    quantity: 2,
+    price: 22.22,
+    high: defaultHighVal,
+    low: defaultLowVal
+  }
+
+const prevYearHigherResponseForHistoryFunc = {
+    symbol: STONKS[0],
+    value: 44.44,
+    quantity: 2,
+    price: 22.22,
+    high: prevYearHigherVal,
+    low: defaultLowVal
+}
+const prevYearLowerResponseForHistoryFunc = {
+    symbol: STONKS[0],
+    value: 44.44,
+    quantity: 2,
+    price: 22.22,
+    high: defaultHighVal,
+    low: prevYearLowerVal
+}
 const defaultResponseFromHistoryEndpoint = {historical: [{
     date: '2019-08-14',
     open: 47.36,
@@ -161,7 +183,6 @@ describe('Stock service', () => {
         .get(QUOTESUFFIX + STONKS)
         .reply(200, defaultResponseFromQuoteEndpoint)
         // .log(console.log) // For debugging
-        // .persist()
 
         // Perform on internals
 
@@ -188,11 +209,11 @@ describe('Stock service', () => {
 
             // Perform on internals
 
-            const result = await getHistoricalHighLow(defaultStockSymbol, defaultHighVal, defaultLowVal, defaultLastYear)
+            const result = await getHistoricalHighLow(defaultResponseForHistoryFunc, defaultLastYear)
             expect(result).toMatchObject(defaultResponseForHistoryFunc)
         })
 
-        // These tests could be simplified be moving the high low replacement loop logic to it's own function. Because there are only 3 expected inputs, I'm not concerned with test runtime.
+        // These tests could be simplified be moving the high low replacement loop logic to it's own function. Because there are only 3 expected stock inputs, I'm not concerned with test runtime.
         it('should ignore years prior to previous year', async () => {
             nock(BASEURL, {
                 filteringScope: function(scope) {
@@ -204,7 +225,7 @@ describe('Stock service', () => {
             .reply(200, yearTestResponseFromHistoryEndpoint)
 
             
-            const result = await getHistoricalHighLow(defaultStockSymbol, defaultHighVal, defaultLowVal, defaultLastYear)
+            const result = await getHistoricalHighLow(defaultResponseForHistoryFunc, defaultLastYear)
             expect(result).toMatchObject(defaultResponseForHistoryFunc)
         })
 
@@ -219,7 +240,7 @@ describe('Stock service', () => {
             .reply(200, previousYearHigherResponseFromHistoryEndpoint)
 
             
-            const result = await getHistoricalHighLow(defaultStockSymbol, defaultHighVal, defaultLowVal, defaultLastYear)
+            const result = await getHistoricalHighLow(defaultResponseForHistoryFunc, defaultLastYear)
             expect(result).toMatchObject(prevYearHigherResponseForHistoryFunc)
         })
 
@@ -234,7 +255,7 @@ describe('Stock service', () => {
             .reply(200, previousYearLowerResponseFromHistoryEndpoint)
 
             
-            const result = await getHistoricalHighLow(defaultStockSymbol, defaultHighVal, defaultLowVal, defaultLastYear)
+            const result = await getHistoricalHighLow(defaultResponseForHistoryFunc, defaultLastYear)
             expect(result).toMatchObject(prevYearLowerResponseForHistoryFunc)
         })
 
@@ -245,21 +266,18 @@ describe('Stock service', () => {
 
 
     xit('should call current year and historical through getStockInfo', async () => {
-        // stub externals
 
+        // just mock the functions and spy
         nock(BASEURL, {
         filteringScope: function(scope) {
             return true;
             }
         })
         .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
-        // .filteringPath(function(path){
-        //     return '/';
-        // })
         .get(QUOTESUFFIX + STONKS)
         .reply(200, defaultResponseFromQuote)
-        // .log(console.log) // For debugging
-        // .persist()
+        .get(HISTORYSUFFIX + defaultStockSymbol)
+        .reply(200, defaultResponseFromHistoryEndpoint)
 
         // perform on internals
 
@@ -267,11 +285,6 @@ describe('Stock service', () => {
 
         expect(req.status).toBe(200)
         expect(result).toBe(defaultResponseForCurrentYear)
-
-        // array of len 4 of typeof(object) with properties x6
-
-        // const req = await request(axios)
-        // .get(fullURL)
     })
 
 })
