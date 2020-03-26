@@ -1,7 +1,7 @@
 # stock-tracker
-Programming evaluation. This application uses modern technology to track the values of three stocks since 1/1/2019
+Programming evaluation. This application tracks the values of three stocks since 1/1/2019
 
-This application utilizes a Node.js backend and React frontend. 
+This application utilizes a Node.js backend
 
 This API is used to retrieve stock pricing data: https://financialmodelingprep.com/developer/docs/ 
 
