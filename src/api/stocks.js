@@ -1,8 +1,7 @@
-
-import { createObjectCsvWriter } from 'csv-writer'
 import { DEFAULTQUANTITIES, STONKS } from '../common/constants'
+import { createObjectCsvWriter } from 'csv-writer'
 import express from 'express'
-import HttpStatus from'http-status-codes'
+import HttpStatus from 'http-status-codes'
 import { getStockInfo } from '../service/stock-service'
 import { toDollarString } from '../common/helpers'
 
