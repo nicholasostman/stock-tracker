@@ -4,5 +4,5 @@ export function toDollarString(value) {
 }
 
 export function stripDollarSign(string) {
-	return string.replace('$', '')
+	return string.replace(/\$/g, '')
 }
