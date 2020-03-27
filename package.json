@@ -14,7 +14,7 @@
     "build:debug": "parcel build src/entry.js --no-minify --experimental-scope-hoisting --target node --bundle-node-modules --out-file app.js",
     "clean": "rm dist/bundle.js",
     "coverage": "jest ./spec/ --collect-coverage",
-    "test": "jest ./spec/",
+    "test": "jest ./spec/ --silent",
     "lint": "eslint ./src",
     "fix": "eslint ./src --fix"
   },

@@ -1,7 +1,7 @@
+import * as stock from './stock-service' // import into self
 import { BASEURL, HISTORYSUFFIX, QUOTESUFFIX } from 'config'
 import axios from 'axios'
 import moment from 'moment'
-import * as stock from './stock-service' // import into self
 
 export async function getStockInfo(stockTickers, quantities) {
 

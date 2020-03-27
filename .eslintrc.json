@@ -37,7 +37,9 @@
         "no-undefined": 2,
         "quotes": [2, "single"],
         "semi": [2, "never"],
-        "sort-imports": 1,
+        "sort-imports": [1, {
+            "ignoreCase": true
+        }],
         "sort-vars": 1,
         "guard-for-in": 2,
         "no-eval": 2,
