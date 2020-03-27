@@ -1,9 +1,10 @@
 import { BASEURL, HISTORYSUFFIX, QUOTESUFFIX } from 'config'
 import { getHistoricalHighLow, getStockInfo, stockInfoCurrentYear } from '../../src/service/stock-service'
 import { STONKS, DEFAULTQUANTITIES } from '../../src/common/constants'
-import { defaultLastYear, defaultStockSymbol, defaultDate, defaultResponseFromQuoteEndpoint, defaultResponseForCurrentYear, finalFormattedResult, defaultInputForHistoryFunc, inputChunkTwo, inputChunkThree, prevYearHigherInputForHistoryFunc, prevYearLowerInputForHistoryFunc, defaultResponseFromHistoryEndpoint, yearTestResponseFromHistoryEndpoint, previousYearHigherResponseFromHistoryEndpoint, previousYearLowerResponseFromHistoryEndpoint
+import { defaultLastYear, defaultStockSymbol, defaultDate, defaultResponseFromQuoteEndpoint, defaultResponseForCurrentYear, finalUnformattedResult, defaultInputForHistoryFunc, inputChunkTwo, inputChunkThree, prevYearHigherInputForHistoryFunc, prevYearLowerInputForHistoryFunc, defaultResponseFromHistoryEndpoint, yearTestResponseFromHistoryEndpoint, previousYearHigherResponseFromHistoryEndpoint, previousYearLowerResponseFromHistoryEndpoint
 } from '../testingConstants'
 import nock from 'nock'
+import * as stock from '../../src/service/stock-service'
 
 // Ensure that interceptors do not interfere with each other (bleed over params)
 afterAll(() => {
@@ -84,24 +85,21 @@ describe('Stock service', () => {
         })
     })
 
-    it.only('should call child funcs and get correct final response through getStockInfo', async () => {
+    it('should call child funcs and get correct final response through getStockInfo', async () => {
         
-        // const mockCurrentYearFunc = jest.fn()
-        const mockCurrentYearFunc = jest.spyOn(getStockInfo, 'stockInfoCurrentYear')
+        const mockCurrentYearFunc = jest.spyOn(stock, 'stockInfoCurrentYear')
         mockCurrentYearFunc.mockImplementation(() => defaultResponseForCurrentYear)
 
-        // const mockHistoryFunc = jest.mock('getHistoricalHighLow', () => jest.fn())
-        // mockHistoryFunc.mockImplementationOnce(() => defaultInputForHistoryFunc)
-        // .mockImplementationOnce(() => inputChunkTwo)// in this case the inputs are also the results
-        // .mockImplementationOnce(() => inputChunkThree)
-
-        // perform on internals
+        const mockHistoryFunc = jest.spyOn(stock, 'getHistoricalHighLow')
+        mockHistoryFunc.mockImplementationOnce(() => defaultInputForHistoryFunc)
+        .mockImplementationOnce(() => inputChunkTwo) // in this case the inputs are also the results
+        .mockImplementationOnce(() => inputChunkThree)
 
         const result = await getStockInfo(STONKS, DEFAULTQUANTITIES)
 
         expect(stockInfoCurrentYear).toHaveBeenCalled()
         expect(getHistoricalHighLow).toHaveBeenCalled()
-        expect(result).toBe(finalFormattedResult)
+        expect(result).toMatchObject(finalUnformattedResult)
     })
 
 })

@@ -1,17 +1,21 @@
 import { BASEURL, HISTORYSUFFIX, QUOTESUFFIX } from 'config'
 import axios from 'axios'
 import moment from 'moment'
+import * as stock from './stock-service' // import into self
 
 export async function getStockInfo(stockTickers, quantities) {
 
-	let currentYearInfo = await stockInfoCurrentYear(stockTickers, quantities)
+	let currentYearInfo = await stock.stockInfoCurrentYear(stockTickers, quantities)
 
 	let stockResultsThroughPrevYear = []
 	const lastYear = moment().subtract(1, 'years').format('YYYY')
 
 	for (let currentYearStockInfo of currentYearInfo) {
-		if (currentYearStockInfo.symbol !== 'Total') // Code will still work, but prefer to skip additional api call
-			stockResultsThroughPrevYear.push(await getHistoricalHighLow(currentYearStockInfo, lastYear))
+		if (currentYearStockInfo.symbol !== 'Total') {// Code will still work, but prefer to skip additional api call
+			stockResultsThroughPrevYear.push(await stock.getHistoricalHighLow(currentYearStockInfo, lastYear))
+		} else {
+			stockResultsThroughPrevYear.push(currentYearStockInfo)
+		}
 	}
 
 	return stockResultsThroughPrevYear
@@ -19,7 +23,6 @@ export async function getStockInfo(stockTickers, quantities) {
 
 // Replaces the existing stockInfo current year high and low with previous year high and low if applicable
 export async function getHistoricalHighLow(stockInfo, lastYear) {
-
 	let stockSymbol = stockInfo.symbol
 
 	const fullURL = BASEURL + HISTORYSUFFIX + stockSymbol

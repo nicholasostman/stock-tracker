@@ -5,7 +5,7 @@ export const prevYearHigherVal = 1000.96
 export const defaultLowVal = 19.10
 export const prevYearLowerVal = 2.14
 export const defaultLastYear = '2019'
-export const defaultStockSymbol = STONKS[0]
+export const defaultStockSymbol = STONKS[2]
 // moment will use Data.now internally to calculate previous year for history function
 export const defaultDate = Date.now = jest.fn(() => new Date(Date.UTC(2019, 3, 24)).valueOf())
 export const defaultResponseFromQuoteEndpoint =  [{
@@ -108,6 +108,33 @@ export const defaultResponseForCurrentYear = [
     },
     { symbol: 'Total', value: 336.90 }
 ]
+export const finalUnformattedResult = [ // I'd typically use more vars
+    {
+        symbol: 'DAL',
+        value: 44.44,
+        quantity: 2,
+        price: 22.22,
+        high: 63.44,
+        low: 19.10
+    },
+    {
+        symbol: 'LYFT',
+        value: 135.66,
+        quantity: 6,
+        price: 22.61,
+        high: 88.60,
+        low: 14.562
+    },
+    {
+        symbol: 'UBER',
+        value: 156.80,
+        quantity: 7,
+        price: 22.4,
+        high: 47.08,
+        low: 13.71
+    },
+    { symbol: 'Total', value: 336.90 }
+]
 export const finalFormattedResult = [ // I'd typically use more vars
     {
         symbol: 'DAL',
@@ -133,10 +160,10 @@ export const finalFormattedResult = [ // I'd typically use more vars
         high: '$47.08',
         low: '$13.71'
     },
-    { symbol: 'Total', value: 336.90 }
+    { symbol: 'Total', value: '$336.90' }
 ]
 export const defaultInputForHistoryFunc = {
-    symbol: STONKS[0],
+    symbol: STONKS[2],
     value: 44.44,
     quantity: 2,
     price: 22.22,
@@ -153,14 +180,14 @@ export const inputChunkTwo = {
 }
 export const inputChunkThree = {
     symbol: 'UBER',
-    value: '$156.80',
+    value: 156.80,
     quantity: 7,
-    price: '$22.40',
-    high: '$47.08',
-    low: '$13.71'
+    price: 22.40,
+    high: 47.08,
+    low: 13.71
 }
 export const prevYearHigherInputForHistoryFunc = {
-    symbol: STONKS[0],
+    symbol: defaultStockSymbol,
     value: 44.44,
     quantity: 2,
     price: 22.22,
@@ -168,7 +195,7 @@ export const prevYearHigherInputForHistoryFunc = {
     low: defaultLowVal
 }
 export const prevYearLowerInputForHistoryFunc = {
-    symbol: STONKS[0],
+    symbol: defaultStockSymbol,
     value: 44.44,
     quantity: 2,
     price: 22.22,
